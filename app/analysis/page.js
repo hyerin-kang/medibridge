@@ -30,7 +30,7 @@ const AnalysisPage = () => {
 
       {loading && (
         <AnalysisLoading
-          fileUrl="/sample_analysis.xlsx"
+          fileUrl="/sample_analysis.pdf"
           onFinish={() => alert("분석 완료!")}
         />
       )}
