@@ -1,11 +1,9 @@
 "use client";
-
-import { Loader } from "lucide-react";
+import { Loader2 } from "lucide-react";
 import { useState, useEffect } from "react";
 
 const AnalysisLoading = ({ onFinish, fileUrl }) => {
   const [showDownload, setShowDownload] = useState(false);
-  const [visible, setVisible] = useState(true);
 
   useEffect(() => {
     const timer = setTimeout(() => {
@@ -16,33 +14,24 @@ const AnalysisLoading = ({ onFinish, fileUrl }) => {
     return () => clearTimeout(timer);
   }, [onFinish]);
 
-  if (!visible) return null;
-
   return (
-    <div className="fixed inset-0 z-50 bg-black/50 flex flex-col items-center justify-center">
-      <button
-        className="absolute top-4 right-4 text-white text-xl font-bold"
-        onClick={() => setVisible(false)}
-      >
-        ✕
-      </button>
+    <div className="fixed inset-0 z-50 bg-black/50 flex flex-col items-center justify-center p-6">
       {!showDownload && (
-        <>
-          {" "}
-          <Loader />
-          <div className="text-white text-xl font-semibold mb-4 text-center">
+        <div className="flex flex-col items-center">
+          <Loader2 className="animate-spin text-white w-12 h-12 mb-4" />
+          <p className="text-white text-lg font-semibold text-center">
             분석 중입니다... 잠시만 기다려주세요.
-          </div>
-        </>
+          </p>
+        </div>
       )}
 
       {showDownload && fileUrl && (
         <a
           href={fileUrl}
           download
-          className="px-6 py-3 bg-green-600 text-white rounded-xl shadow"
+          className="px-8 py-4 bg-green-500 hover:bg-green-600 text-white rounded-xl font-semibold text-lg transition"
         >
-          엑셀 다운로드
+          PDF 다운로드
         </a>
       )}
     </div>

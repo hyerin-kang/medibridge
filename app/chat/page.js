@@ -1,8 +1,10 @@
-"use client";
+"use client"; // App Router에서 필수
 
+import { Hospital } from "lucide-react";
+import Link from "next/link";
 import { useState } from "react";
 
-export default function MedicalConsultation() {
+export default function ChatPage() {
   const [symptoms, setSymptoms] = useState("");
   const [response, setResponse] = useState("");
   const [loading, setLoading] = useState(false);
@@ -13,7 +15,7 @@ export default function MedicalConsultation() {
   const detectLanguage = (text) => {
     const koreanRegex = /[가-힣]/;
     const chineseRegex = /[一-龯]/;
-    const japaneseRegex = /[ぁ-んァ-ヶ]/; // 일본어 정규식 수정
+    const japaneseRegex = /[ひらがなカタカナ]/;
     const arabicRegex = /[ء-ي]/;
     const russianRegex = /[а-я]/i;
 
@@ -48,6 +50,8 @@ export default function MedicalConsultation() {
         ],
         emptyError: "증상을 입력해주세요.",
         testBtn: "🔧 API 테스트",
+        HospitalText: "당신의 주변의 병원을 추천해드릴까요?",
+        HospitalLink: "네! 추천해주세요",
       },
       English: {
         title: "🏥 AI Medical Consultation",
@@ -70,47 +74,8 @@ export default function MedicalConsultation() {
         ],
         emptyError: "Please enter your symptoms.",
         testBtn: "🔧 API Test",
-      },
-      Chinese: {
-        title: "🏥 AI医疗咨询",
-        subtitle: "输入您的症状，AI将协助进行咨询。",
-        disclaimer: "⚠️ 为了准确诊断，您必须寻求医疗专业人员的直接诊疗。",
-        label: "请详细描述您的症状：",
-        placeholder: "例如：从昨天开始头痛发烧，咳嗽也很严重...",
-        submitBtn: "🤖 获取AI咨询",
-        loadingBtn: "咨询中...",
-        clearBtn: "清除",
-        errorTitle: "❌ 错误",
-        resultTitle: "💬 AI咨询结果",
-        warningTitle: "⚠️ 重要通知",
-        warningItems: [
-          "此咨询仅供参考，不能替代医学诊断。",
-          "如果您有严重症状或怀疑是紧急情况，请立即拨打急救电话。",
-          "为了准确诊断和治疗，您必须寻求医疗专业人员的直接诊疗。",
-        ],
-        emptyError: "请输入您的症状。",
-        testBtn: "🔧 API测试",
-      },
-      Japanese: {
-        title: "🏥 AI医療相談",
-        subtitle: "症状を入力すると、AIが相談をサポートします。",
-        disclaimer:
-          "⚠️ 正確な診断のためには、必ず医療専門家の診察を受けてください。",
-        label: "症状を詳しく説明してください：",
-        placeholder: "例：昨日から頭痛と発熱があり、咳もひどいです...",
-        submitBtn: "🤖 AI相談を受ける",
-        loadingBtn: "相談中...",
-        clearBtn: "クリア",
-        errorTitle: "❌ エラー",
-        resultTitle: "💬 AI相談結果",
-        warningTitle: "⚠️ 重要なお知らせ",
-        warningItems: [
-          "この相談は参考用であり、医学的診断に代わるものではありません。",
-          "重篤な症状や緊急事態が疑われる場合は、すぐに救急サービスに連絡してください。",
-          "正確な診断と治療のためには、必ず医療専門家の診察を受けてください。",
-        ],
-        emptyError: "症状を入力してください。",
-        testBtn: "🔧 APIテスト",
+        HospitalText: "Would you like me to recommend hospitals near you?",
+        HospitalLink: "Yes, please recommend.",
       },
     };
 
@@ -226,6 +191,7 @@ export default function MedicalConsultation() {
         margin: "0 auto",
         padding: "20px",
         fontFamily: "system-ui, -apple-system, sans-serif",
+        height: "calc(100vh - 150px)",
       }}
     >
       <header style={{ textAlign: "center", marginBottom: "30px" }}>
@@ -259,7 +225,7 @@ export default function MedicalConsultation() {
         )}
 
         {/* 디버깅용 버튼 */}
-        <div style={{ marginTop: "15px" }}>
+        {/* <div style={{ marginTop: "15px" }}>
           <button
             onClick={testAPI}
             style={{
@@ -294,7 +260,7 @@ export default function MedicalConsultation() {
           >
             🔍 디버그 정보
           </button>
-        </div>
+        </div> */}
       </header>
 
       <form onSubmit={handleSubmit} style={{ marginBottom: "30px" }}>
@@ -415,6 +381,7 @@ export default function MedicalConsultation() {
             boxShadow: "0 4px 6px rgba(0,0,0,0.05)",
           }}
         >
+          {/* 상담결과 */}
           <h3
             style={{
               margin: "0 0 18px",
@@ -436,6 +403,8 @@ export default function MedicalConsultation() {
           >
             {response}
           </div>
+          <div>{uiText.HospitalText}</div>
+          <Link href="hospitalList">{uiText.HospitalLink}</Link>
         </div>
       )}
 
@@ -471,23 +440,6 @@ export default function MedicalConsultation() {
           </ul>
         </div>
       )}
-
-      <footer
-        style={{
-          textAlign: "center",
-          marginTop: "50px",
-          paddingTop: "25px",
-          borderTop: "1px solid #e1e8ed",
-        }}
-      >
-        <p style={{ color: "#7f8c8d", fontSize: "13px", margin: 0 }}>
-          © MEDIBRIDGE
-        </p>
-        <p style={{ color: "#bdc3c7", fontSize: "11px", marginTop: "5px" }}>
-          🌍 Multi-language support: Korean, English, Chinese, Japanese, and
-          more
-        </p>
-      </footer>
     </div>
   );
 }

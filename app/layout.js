@@ -1,5 +1,8 @@
 import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
+import Link from "next/link";
+import Image from "next/image";
+import logo from "@/public/logo.png";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -20,9 +23,43 @@ export default function RootLayout({ children }) {
   return (
     <html lang="en">
       <body
-        className={`${geistSans.variable} ${geistMono.variable} antialiased`}
+        className={`${geistSans.variable} ${geistMono.variable} antialiased flex flex-col min-h-screen`}
       >
-        {children}
+        {/* 헤더 */}
+        <header className="bg-white shadow-md h-[50px] px-6 border-b-gray-300 border-b-[1px]">
+          <div className="max-w-7xl mx-auto  flex items-center justify-between h-full">
+            <Link href="/" className="text-2xl font-extrabold text-gray-800">
+              <Image src={logo} width={100} height={30} />
+            </Link>
+            <nav className="flex gap-6 text-gray-700 font-medium">
+              <Link href="#" className="text-gray-400">
+                회사소개
+              </Link>
+              <Link href="#" className="text-gray-400">
+                서비스소개
+              </Link>
+              <Link href="#" className="text-gray-400">
+                인스타그램성과
+              </Link>
+            </nav>
+          </div>
+        </header>
+
+        {/* 페이지 내용 */}
+        <main className="">{children}</main>
+
+        {/* 푸터 */}
+        <footer className="border-t border-gray-300">
+          <div className="max-w-7xl mx-auto px-6 py-6 text-center text-gray-500 text-sm">
+            <p className="mb-1">
+              © 2025 AI Medical Consultation Service | MEDIBRIDGE
+            </p>
+            <p className="text-gray-400 text-xs">
+              🌍 Multi-language support: Korean, English, Chinese, Japanese, and
+              more
+            </p>
+          </div>
+        </footer>
       </body>
     </html>
   );
