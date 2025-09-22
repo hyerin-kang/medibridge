@@ -191,7 +191,6 @@ export default function ChatPage() {
         margin: "0 auto",
         padding: "20px",
         fontFamily: "system-ui, -apple-system, sans-serif",
-        height: "calc(100vh - 150px)",
       }}
     >
       <header style={{ textAlign: "center", marginBottom: "30px" }}>

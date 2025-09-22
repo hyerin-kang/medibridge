@@ -33,11 +33,11 @@ export default function Home() {
 
       {/* 이미지/서비스 섹션 */}
       <div className="mt-12 w-full max-w-4xl flex justify-center">
-        <img
+        {/* <img
           src="/service_sample.png" // 실제 서비스 사진 경로
           alt="메디브릿지 서비스"
           className="w-full rounded-xl shadow-lg border border-gray-200"
-        />
+        /> */}
       </div>
     </main>
   );

@@ -29,7 +29,7 @@ export default function RootLayout({ children }) {
         <header className="bg-white shadow-md h-[50px] px-6 border-b-gray-300 border-b-[1px]">
           <div className="max-w-7xl mx-auto  flex items-center justify-between h-full">
             <Link href="/" className="text-2xl font-extrabold text-gray-800">
-              <Image src={logo} width={100} height={30} />
+              <Image src={logo} width={100} height={30} alt="logo" />
             </Link>
             <nav className="flex gap-6 text-gray-700 font-medium">
               <Link href="#" className="text-gray-400">
