@@ -59,7 +59,7 @@ export default function Home() {
         {/* <img
           src="/service_sample.png"
           alt="메디브릿지 서비스"
-          className="w-full rounded-xl shadow-lg border border-gray-200"
+          className="w-full rounded-xl shadow-lg border border-gray-200 aa"
         /> */}
         <div className="w-full h-[500px] bg-gray-600 rounded-md"></div>
       </motion.div>
