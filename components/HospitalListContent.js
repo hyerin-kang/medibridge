@@ -17,7 +17,7 @@ export default function HospitalListContent() {
   const mockHospitals = [
     {
       id: 1,
-      name: "아늑한의원",
+      name: "아늑한의원 | 차정훈 원장",
       type: "한의원",
       distance: "300m",
       specialties: ["약침", "침치료", "추나"],
@@ -135,15 +135,26 @@ export default function HospitalListContent() {
         <div
           key={hospital.id}
           onClick={() => handleHospitalClick(hospital)}
-          className="bg-white border-2 border-gray-200 rounded-xl p-5 mb-4 cursor-pointer transition-all duration-200 hover:border-blue-500 hover:-translate-y-1"
+          className={`relative bg-white border-2 rounded-xl p-5 mb-4 cursor-pointer transition-all duration-200 hover:-translate-y-1 ${
+            index === 0
+              ? "border-blue-300  hover:border-blue-500"
+              : "border-gray-200 hover:border-blue-500"
+          }`}
         >
+          {/* 추천 뱃지 */}
+          {index === 0 && (
+            <span className="absolute -top-2 -left-2 bg-blue-500 text-white text-xs font-bold px-2 py-1 rounded-tr-lg rounded-bl-lg shadow-md">
+              추천!
+            </span>
+          )}
+
           <div className="flex justify-between items-start mb-3">
             <div>
               <h3 className="text-lg font-semibold text-gray-800 mb-1">
                 {index + 1}. {hospital.name}
               </h3>
               <div className="flex items-center gap-2">
-                <span className="bg-blue-500 text-white text-xs px-2 py-0.5 rounded-full">
+                <span className="bg-blue-300 text-white text-xs px-2 py-0.5 rounded-full">
                   {hospital.type}
                 </span>
                 <span className="text-red-500 font-bold">

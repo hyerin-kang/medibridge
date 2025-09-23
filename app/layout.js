@@ -26,10 +26,10 @@ export default function RootLayout({ children }) {
         className={`${geistSans.variable} ${geistMono.variable} antialiased flex flex-col min-h-screen`}
       >
         {/* 헤더 */}
-        <header className="bg-white shadow-md h-[50px] px-6 border-b-gray-300 border-b-[1px]">
+        <header className="bg-white shadow-md h-[80px] px-6 border-b-gray-300 border-b-[1px]">
           <div className="max-w-7xl mx-auto  flex items-center justify-between h-full">
             <Link href="/" className="text-2xl font-extrabold text-gray-800">
-              <Image src={logo} width={100} height={30} alt="logo" />
+              <Image src={logo} width={120} height={50} alt="logo" />
             </Link>
             <nav className="flex gap-6 text-gray-700 font-medium">
               <Link href="#" className="text-gray-400">
@@ -39,7 +39,13 @@ export default function RootLayout({ children }) {
                 서비스소개
               </Link>
               <Link href="#" className="text-gray-400">
-                인스타그램성과
+                성과
+              </Link>
+              <Link href="#" className="text-gray-400">
+                인스타그램
+              </Link>
+              <Link href="#" className="text-gray-400">
+                QNA
               </Link>
             </nav>
           </div>

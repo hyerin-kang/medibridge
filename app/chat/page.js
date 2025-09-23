@@ -402,8 +402,17 @@ export default function ChatPage() {
           >
             {response}
           </div>
-          <div>{uiText.HospitalText}</div>
-          <Link href="hospitalList">{uiText.HospitalLink}</Link>
+          <div className="mt-4 border-t border-gray-300 pt-4">
+            <h4 className="font-semibold text-gray-800 mb-2">
+              {uiText.HospitalText}
+            </h4>
+            <Link
+              href="/hospitalList"
+              className="inline-block px-4 py-2 rounded-lg bg-blue-400 text-white text-sm font-medium shadow-sm hover:bg-blue-500 transition-colors duration-200"
+            >
+              {uiText.HospitalLink}
+            </Link>
+          </div>
         </div>
       )}
 
