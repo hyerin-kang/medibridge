@@ -26,7 +26,7 @@ export default function HospitalChatContent() {
   const hospitalInfo = {
     1: {
       name: "아늑한의원",
-      doctor: "김한의 원장",
+      doctor: "차정훈 원장",
       specialties: ["약침", "침치료", "추나"],
       workingHours: "월-금 09:00-18:00, 토 09:00-13:00",
     },

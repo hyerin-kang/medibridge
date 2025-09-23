@@ -17,7 +17,7 @@ export default function HospitalListContent() {
   const mockHospitals = [
     {
       id: 1,
-      name: "아늑한의원 | 차정훈 원장",
+      name: "아늑한의원",
       type: "한의원",
       distance: "300m",
       specialties: ["약침", "침치료", "추나"],
