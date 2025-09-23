@@ -2,6 +2,9 @@
 
 import Link from "next/link";
 import { motion } from "framer-motion";
+import mainImg from "@/public/service_sample.png";
+
+import Image from "next/image";
 
 export default function Home() {
   return (
@@ -56,12 +59,7 @@ export default function Home() {
         transition={{ duration: 0.8, delay: 0.9 }}
         className="mt-12 w-full max-w-4xl flex justify-center"
       >
-        {/* <img
-          src="/service_sample.png"
-          alt="메디브릿지 서비스"
-          className="w-full rounded-xl shadow-lg border border-gray-200 aa"
-        /> */}
-        <div className="w-full h-[500px] bg-gray-600 rounded-md"></div>
+        <Image src={mainImg} alt="메디브릿지 서비스" className="w-full" />
       </motion.div>
     </main>
   );
