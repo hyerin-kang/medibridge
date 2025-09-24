@@ -13,7 +13,7 @@ const AnalysisPage = () => {
   };
 
   return (
-    <main className="p-6 max-w-2xl mx-auto font-sans">
+    <main className="p-6 max-w-2xl mx-auto font-sans h-[calc(100vh-170px)]">
       <h2 className="text-2xl font-bold mb-6 text-gray-600">
         📍 입지 분석을 하고 싶은 주소를 입력해 주세요
       </h2>
