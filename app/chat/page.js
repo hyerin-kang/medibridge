@@ -11,6 +11,10 @@ export default function ChatPage() {
   const [error, setError] = useState("");
   const [detectedLanguage, setDetectedLanguage] = useState("");
 
+  function filterResponse(response) {
+    return response.replaceAll("**", "");
+  }
+
   // 언어 감지 함수
   const detectLanguage = (text) => {
     const koreanRegex = /[가-힣]/;
@@ -138,7 +142,7 @@ export default function ChatPage() {
       }
 
       const data = await res.json();
-      setResponse(data.response);
+      setResponse(filterResponse(data.response));
 
       if (data.isTestResponse) {
         console.log("🧪 테스트 모드로 실행됨");
