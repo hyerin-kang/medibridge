@@ -74,7 +74,7 @@ export default function Home() {
             href="https://naver.me/G8hId90X"
             target="_blank"
             alt="신청 폼 바로가기"
-            className="px-8 py-3 bg-white hover:bg-blue-600 text-blue-500 rounded-xl text-lg font-semibold transition"
+            className="px-8 py-3 bg-white hover:bg-blue-600 transition hover:text-white text-blue-500 rounded-xl text-lg font-semibold transition"
           >
             상담 신청 하기 &#8640;
           </Link>
