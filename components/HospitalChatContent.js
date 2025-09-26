@@ -2,6 +2,8 @@
 
 import { useState, useEffect } from "react";
 import { useSearchParams } from "next/navigation";
+import icoKakao from "@/public/ico-kakao.png";
+import Image from "next/image";
 
 export default function HospitalChatContent() {
   const searchParams = useSearchParams();
@@ -13,6 +15,9 @@ export default function HospitalChatContent() {
   const [messages, setMessages] = useState([]);
   const [inputMessage, setInputMessage] = useState("");
   const [loading, setLoading] = useState(false);
+
+  const [showReservationButton, setShowReservationButton] = useState(false);
+  const [showKakaoButton, setShowKakaoButton] = useState(false);
 
   // searchParams를 state에 세팅
   useEffect(() => {
@@ -146,6 +151,36 @@ export default function HospitalChatContent() {
                 <div className="w-2 h-2 bg-blue-500 rounded-full delay-400 animate-bounce"></div>
               </div>
             </div>
+          </div>
+        )}
+        {/* 예약버튼 */}
+        {messages.length > 0 &&
+          messages[messages.length - 1].type === "hospital" &&
+          messages[messages.length - 1].content.includes("예약 도와드릴까요") &&
+          !showReservationButton && (
+            <div className="flex justify-center mt-4">
+              <button
+                onClick={() => {
+                  setShowReservationButton(true); // "예" 버튼 클릭 후 카톡 버튼 활성화
+                  setShowKakaoButton(true);
+                }}
+                className="bg-blue-500 text-white px-4 py-2 rounded-lg font-bold hover:bg-blue-600"
+              >
+                네, 예약할게요
+              </button>
+            </div>
+          )}
+
+        {/* 예 버튼 클릭 후 카톡 알림 버튼 */}
+        {showKakaoButton && (
+          <div className="flex justify-center mt-4">
+            <button
+              onClick={() => alert("카톡 알림이 설정되었습니다!")}
+              className="bg-[#fee500] text-black px-4 py-2 rounded-lg font-bold hover:bg-[#FFD700] flex flex-wrap gap-4 items-center"
+            >
+              <Image src={icoKakao} width={20} height={10} alt="ico-kakao" />
+              <span>카카오톡으로 다음 방문일을 챙겨드릴까요?</span>
+            </button>
           </div>
         )}
       </div>
