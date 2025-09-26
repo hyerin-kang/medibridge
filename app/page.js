@@ -66,9 +66,9 @@ export default function Home() {
       <div className="w-full bg-blue-400">
         <div className="container m-auto flex flex-col items-center text-center p-10 gap-5">
           <p className="text-white text-2xl font-bold">
-            다시 찾고싶은 병원 만들기,
+            남들보다 앞서나가는 병원만들기,
             <br />
-            10분 방문상담을 통해 지금 바로 시장해보세요!
+            5분 상담을 통해 지금 바로 시작해보세요!
           </p>
           <Link
             href="https://www.naver.com"
@@ -76,7 +76,7 @@ export default function Home() {
             alt="신청 폼 바로가기"
             className="px-8 py-3 bg-white hover:bg-blue-600 text-blue-500 rounded-xl text-lg font-semibold transition"
           >
-            10분 방문 상담 신청 &#8640;
+            상담 신청 하기 &#8640;
           </Link>
         </div>
       </div>
