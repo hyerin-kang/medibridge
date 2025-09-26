@@ -71,7 +71,7 @@ export default function Home() {
             5분 상담을 통해 지금 바로 시작해보세요!
           </p>
           <Link
-            href="https://www.naver.com"
+            href="https://naver.me/G8hId90X"
             target="_blank"
             alt="신청 폼 바로가기"
             className="px-8 py-3 bg-white hover:bg-blue-600 text-blue-500 rounded-xl text-lg font-semibold transition"

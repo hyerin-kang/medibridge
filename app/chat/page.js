@@ -1,12 +1,13 @@
-"use client"; // App Router에서 필수
+"use client";
 
-import { Hospital } from "lucide-react";
+import { Loader2 } from "lucide-react";
 import Link from "next/link";
 import { useState } from "react";
 
 export default function ChatPage() {
   const [symptoms, setSymptoms] = useState("");
   const [response, setResponse] = useState("");
+  const [sources, setSources] = useState([]);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
   const [detectedLanguage, setDetectedLanguage] = useState("");
@@ -15,11 +16,10 @@ export default function ChatPage() {
     return response.replaceAll("**", "");
   }
 
-  // 언어 감지 함수
   const detectLanguage = (text) => {
     const koreanRegex = /[가-힣]/;
     const chineseRegex = /[一-龯]/;
-    const japaneseRegex = /[ひらがなカタカナ]/;
+    const japaneseRegex = /[ぁ-んァ-ン]/;
     const arabicRegex = /[ء-ي]/;
     const russianRegex = /[а-я]/i;
 
@@ -31,7 +31,6 @@ export default function ChatPage() {
     return "English";
   };
 
-  // 언어별 UI 텍스트
   const getUIText = (lang) => {
     const texts = {
       Korean: {
@@ -53,9 +52,9 @@ export default function ChatPage() {
           "정확한 진단과 치료를 위해 반드시 의료진의 진료를 받으시기 바랍니다.",
         ],
         emptyError: "증상을 입력해주세요.",
-        testBtn: "🔧 API 테스트",
         HospitalText: "당신의 주변의 병원을 추천해드릴까요?",
         HospitalLink: "네! 추천해주세요",
+        sourceTitle: "📚 참고 자료",
       },
       English: {
         title: "🏥 AI Medical Consultation",
@@ -77,9 +76,9 @@ export default function ChatPage() {
           "For accurate diagnosis and treatment, you must seek direct medical care from healthcare professionals.",
         ],
         emptyError: "Please enter your symptoms.",
-        testBtn: "🔧 API Test",
         HospitalText: "Would you like me to recommend hospitals near you?",
         HospitalLink: "Yes, please recommend.",
+        sourceTitle: "📚 References",
       },
     };
 
@@ -101,55 +100,22 @@ export default function ChatPage() {
     setLoading(true);
     setError("");
     setResponse("");
+    setSources([]);
 
     try {
-      console.log("API 요청 시작...");
-      console.log("감지된 언어:", currentLang);
-
       const res = await fetch("/api/medical-consultation", {
         method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-          symptoms,
-          language: currentLang,
-        }),
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ symptoms, language: currentLang }),
       });
 
-      console.log("응답 상태:", res.status);
-
-      if (res.status === 404) {
-        const text = await res.text();
-        console.error("404 에러 상세:", text);
-        throw new Error(
-          "API 라우트를 찾을 수 없습니다. app/api/medical-consultation/route.js 파일이 존재하는지 확인해주세요."
-        );
-      }
-
-      if (!res.ok) {
-        const errorText = await res.text();
-        console.error("에러 응답:", errorText);
-
-        try {
-          const errorData = JSON.parse(errorText);
-          throw new Error(errorData.error || "Server error occurred.");
-        } catch (jsonError) {
-          throw new Error(
-            `Server error (${res.status}): ${errorText.substring(0, 100)}...`
-          );
-        }
-      }
+      if (!res.ok) throw new Error("Server error");
 
       const data = await res.json();
       setResponse(filterResponse(data.response));
-
-      if (data.isTestResponse) {
-        console.log("🧪 테스트 모드로 실행됨");
-      }
-    } catch (error) {
-      console.error("요청 에러:", error);
-      setError(error.message);
+      setSources(data.sources || []);
+    } catch (err) {
+      setError(err.message);
     } finally {
       setLoading(false);
     }
@@ -160,122 +126,34 @@ export default function ChatPage() {
     setResponse("");
     setError("");
     setDetectedLanguage("");
+    setSources([]);
   };
 
-  // API 테스트 함수
-  const testAPI = async () => {
-    try {
-      const testRes = await fetch("/api/medical-consultation", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-          symptoms: "API Test / API 테스트",
-          language: "Korean",
-        }),
-      });
-      console.log("API 테스트 결과:", testRes.status);
-      const testData = await testRes.json();
-      console.log("API 테스트 데이터:", testData);
-      alert("API 테스트 완료! 콘솔을 확인하세요.");
-    } catch (err) {
-      console.error("API 테스트 실패:", err);
-      alert("API 테스트 실패: " + err.message);
-    }
-  };
-
-  // 현재 언어에 맞는 UI 텍스트 가져오기
   const currentUILang =
     detectedLanguage || (symptoms ? detectLanguage(symptoms) : "Korean");
   const uiText = getUIText(currentUILang);
 
   return (
-    <div
-      style={{
-        maxWidth: "800px",
-        margin: "0 auto",
-        padding: "20px",
-        fontFamily: "system-ui, -apple-system, sans-serif",
-      }}
-    >
-      <header style={{ textAlign: "center", marginBottom: "30px" }}>
-        <h1
-          style={{ color: "#2c3e50", marginBottom: "10px", fontSize: "2.2rem" }}
-        >
+    <div className="max-w-[800px] mx-auto p-5 font-sans">
+      <header className="text-center mb-8">
+        <h1 className="text-[2.2rem] text-[#2c3e50] mb-2 font-bold">
           {uiText.title}
         </h1>
-        <p style={{ color: "#7f8c8d", fontSize: "16px", marginBottom: "5px" }}>
-          {uiText.subtitle}
-        </p>
-        <p style={{ color: "#e74c3c", fontSize: "14px", fontWeight: "bold" }}>
-          {uiText.disclaimer}
-        </p>
+        <p className="text-[#7f8c8d] text-base mb-1">{uiText.subtitle}</p>
+        <p className="text-[#e74c3c] text-sm font-bold">{uiText.disclaimer}</p>
 
-        {/* 감지된 언어 표시 */}
         {detectedLanguage && (
-          <div
-            style={{
-              display: "inline-block",
-              backgroundColor: "#3498db",
-              color: "white",
-              padding: "4px 12px",
-              borderRadius: "15px",
-              fontSize: "12px",
-              marginTop: "10px",
-            }}
-          >
+          <div className="inline-block bg-[#3498db] text-white px-3 py-1 rounded-full text-xs mt-3">
             🌍 Detected: {detectedLanguage}
           </div>
         )}
-
-        {/* 디버깅용 버튼 */}
-        {/* <div style={{ marginTop: "15px" }}>
-          <button
-            onClick={testAPI}
-            style={{
-              padding: "8px 16px",
-              backgroundColor: "#f39c12",
-              color: "white",
-              border: "none",
-              borderRadius: "6px",
-              fontSize: "13px",
-              cursor: "pointer",
-              marginRight: "10px",
-            }}
-          >
-            {uiText.testBtn}
-          </button>
-
-          <button
-            onClick={() => {
-              console.log("Current symptoms:", symptoms);
-              console.log("Detected language:", detectLanguage(symptoms));
-              console.log("Response:", response);
-            }}
-            style={{
-              padding: "8px 16px",
-              backgroundColor: "#9b59b6",
-              color: "white",
-              border: "none",
-              borderRadius: "6px",
-              fontSize: "13px",
-              cursor: "pointer",
-            }}
-          >
-            🔍 디버그 정보
-          </button>
-        </div> */}
       </header>
 
-      <form onSubmit={handleSubmit} style={{ marginBottom: "30px" }}>
-        <div style={{ marginBottom: "20px" }}>
+      <form onSubmit={handleSubmit} className="mb-8">
+        <div className="mb-5">
           <label
             htmlFor="symptoms"
-            style={{
-              display: "block",
-              marginBottom: "8px",
-              fontWeight: "bold",
-              color: "#34495e",
-            }}
+            className="block mb-2 font-bold text-[#34495e]"
           >
             {uiText.label}
           </label>
@@ -284,62 +162,28 @@ export default function ChatPage() {
             value={symptoms}
             onChange={(e) => setSymptoms(e.target.value)}
             placeholder={uiText.placeholder}
-            style={{
-              width: "100%",
-              minHeight: "140px",
-              padding: "16px",
-              border: "2px solid #e1e8ed",
-              borderRadius: "10px",
-              fontSize: "16px",
-              resize: "vertical",
-              outline: "none",
-              boxSizing: "border-box",
-              lineHeight: "1.5",
-              transition: "border-color 0.2s ease",
-            }}
-            onFocus={(e) => (e.target.style.borderColor = "#3498db")}
-            onBlur={(e) => (e.target.style.borderColor = "#e1e8ed")}
+            className="w-full min-h-[140px] p-4 border-2 border-[#e1e8ed] rounded-lg text-base leading-relaxed resize-y focus:border-[#3498db] outline-none transition"
           />
         </div>
 
-        <div style={{ display: "flex", gap: "12px", flexWrap: "wrap" }}>
+        <div className="flex flex-wrap gap-3">
           <button
             type="submit"
             disabled={loading}
-            style={{
-              padding: "14px 28px",
-              backgroundColor: loading ? "#95a5a6" : "#3498db",
-              color: "white",
-              border: "none",
-              borderRadius: "8px",
-              fontSize: "16px",
-              fontWeight: "bold",
-              cursor: loading ? "not-allowed" : "pointer",
-              flex: 1,
-              minWidth: "180px",
-              transition: "background-color 0.2s ease",
-            }}
+            className={`flex items-center justify-center gap-2 px-7 py-3 rounded-lg font-bold text-white transition flex-1 min-w-[180px] ${
+              loading
+                ? "bg-[#95a5a6] cursor-not-allowed"
+                : "bg-[#3498db] hover:bg-[#2980b9]"
+            }`}
           >
+            {loading && <Loader2 className="animate-spin h-5 w-5" />}
             {loading ? uiText.loadingBtn : uiText.submitBtn}
           </button>
 
           <button
             type="button"
             onClick={clearForm}
-            style={{
-              padding: "14px 24px",
-              backgroundColor: "#e74c3c",
-              color: "white",
-              border: "none",
-              borderRadius: "8px",
-              fontSize: "16px",
-              fontWeight: "bold",
-              cursor: "pointer",
-              minWidth: "100px",
-              transition: "background-color 0.2s ease",
-            }}
-            onMouseOver={(e) => (e.target.style.backgroundColor = "#c0392b")}
-            onMouseOut={(e) => (e.target.style.backgroundColor = "#e74c3c")}
+            className="px-6 py-3 bg-[#e74c3c] hover:bg-[#c0392b] text-white rounded-lg font-bold transition min-w-[100px]"
           >
             {uiText.clearBtn}
           </button>
@@ -347,72 +191,52 @@ export default function ChatPage() {
       </form>
 
       {error && (
-        <div
-          style={{
-            padding: "18px",
-            backgroundColor: "#fee",
-            borderLeft: "5px solid #e74c3c",
-            borderRadius: "6px",
-            marginBottom: "20px",
-            boxShadow: "0 2px 4px rgba(0,0,0,0.1)",
-          }}
-        >
-          <h4 style={{ margin: "0 0 8px", color: "#e74c3c", fontSize: "16px" }}>
+        <div className="p-4 bg-[#fee] border-l-4 border-[#e74c3c] rounded-md mb-6 shadow">
+          <h4 className="text-[#e74c3c] font-semibold mb-1 text-base">
             {uiText.errorTitle}
           </h4>
-          <p
-            style={{
-              margin: 0,
-              color: "#c0392b",
-              fontSize: "14px",
-              lineHeight: "1.4",
-            }}
-          >
-            {error}
-          </p>
+          <p className="text-[#c0392b] text-sm">{error}</p>
         </div>
       )}
 
       {response && (
-        <div
-          style={{
-            padding: "24px",
-            backgroundColor: "#f8f9fa",
-            border: "1px solid #e1e8ed",
-            borderRadius: "12px",
-            marginBottom: "20px",
-            boxShadow: "0 4px 6px rgba(0,0,0,0.05)",
-          }}
-        >
-          {/* 상담결과 */}
-          <h3
-            style={{
-              margin: "0 0 18px",
-              color: "#2c3e50",
-              fontSize: "18px",
-              borderBottom: "2px solid #3498db",
-              paddingBottom: "8px",
-            }}
-          >
+        <div className="p-6 bg-[#f8f9fa] border border-[#e1e8ed] rounded-xl shadow mb-6">
+          <h3 className="text-lg font-bold text-[#2c3e50] border-b-2 border-[#3498db] pb-2 mb-4">
             {uiText.resultTitle}
           </h3>
-          <div
-            style={{
-              whiteSpace: "pre-wrap",
-              lineHeight: "1.7",
-              color: "#34495e",
-              fontSize: "15px",
-            }}
-          >
+          <p className="whitespace-pre-wrap text-[#34495e] leading-relaxed text-sm mb-4">
             {response}
-          </div>
-          <div className="mt-4 border-t border-gray-300 pt-4">
+          </p>
+
+          {sources.length > 0 && (
+            <div className="mt-4">
+              <h4 className="font-semibold text-gray-800 mb-2">
+                {uiText.sourceTitle}
+              </h4>
+              <ul className="list-disc pl-5 space-y-1 text-blue-600 text-sm">
+                {sources.map((src, i) => (
+                  <li key={i}>
+                    <a
+                      href={src.url}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="hover:underline"
+                    >
+                      {src.title || src.url}
+                    </a>
+                  </li>
+                ))}
+              </ul>
+            </div>
+          )}
+
+          <div className="mt-6 border-t pt-4">
             <h4 className="font-semibold text-gray-800 mb-2">
               {uiText.HospitalText}
             </h4>
             <Link
               href="/hospitalList"
-              className="inline-block px-4 py-2 rounded-lg bg-blue-400 text-white text-sm font-medium shadow-sm hover:bg-blue-500 transition-colors duration-200"
+              className="inline-block px-4 py-2 rounded-lg bg-blue-400 text-white text-sm font-medium shadow hover:bg-blue-500 transition"
             >
               {uiText.HospitalLink}
             </Link>
@@ -421,33 +245,13 @@ export default function ChatPage() {
       )}
 
       {response && (
-        <div
-          style={{
-            padding: "20px",
-            backgroundColor: "#fff3cd",
-            border: "1px solid #ffeaa7",
-            borderRadius: "10px",
-            marginTop: "20px",
-            boxShadow: "0 2px 4px rgba(0,0,0,0.05)",
-          }}
-        >
-          <h4
-            style={{
-              margin: "0 0 12px",
-              color: "#856404",
-              fontSize: "16px",
-            }}
-          >
+        <div className="p-5 bg-[#fff3cd] border border-[#ffeaa7] rounded-lg shadow">
+          <h4 className="text-[#856404] font-semibold mb-2 text-base">
             {uiText.warningTitle}
           </h4>
-          <ul style={{ margin: 0, paddingLeft: "20px", color: "#856404" }}>
-            {uiText.warningItems.map((item, index) => (
-              <li
-                key={index}
-                style={{ marginBottom: "6px", lineHeight: "1.4" }}
-              >
-                {item}
-              </li>
+          <ul className="list-disc pl-5 text-[#856404] space-y-1 text-sm">
+            {uiText.warningItems.map((item, i) => (
+              <li key={i}>{item}</li>
             ))}
           </ul>
         </div>

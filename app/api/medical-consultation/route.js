@@ -92,8 +92,25 @@ export async function POST(request) {
     const data = await response.json();
     const aiResponse = data.choices[0].message.content;
 
+    // ✅ 출처 추가 (예시)
+    const sources = [
+      {
+        title: "서울대학교병원 의학정보",
+        url: "https://www.snuh.org/m/health/nMedInfo/nList.do",
+      },
+      {
+        title: "국가건강정보포털",
+        url: "https://health.kdca.go.kr/healthinfo/",
+      },
+      {
+        title: "Mayo Clinic - Symptoms",
+        url: "https://www.mayoclinic.org/symptoms",
+      },
+    ];
+
     return NextResponse.json({
       response: aiResponse,
+      sources,
       timestamp: new Date().toISOString(),
     });
   } catch (error) {
@@ -104,18 +121,28 @@ export async function POST(request) {
       return NextResponse.json({
         response: `테스트 응답: 입력하신 증상에 대해 다음과 같이 안내드립니다.
 
-🔍 **증상 분석:**
+🔍 증상 분석:
 입력하신 증상을 확인했습니다.
 
-💊 **일반적인 대처법:**
+💊 일반적인 대처법:
 - 충분한 휴식을 취하세요
 - 수분을 충분히 섭취하세요
 - 증상이 심해지면 의료진 상담을 받으세요
 
-⚠️ **의료진 상담 권장:**
+⚠️ 의료진 상담 권장:
 정확한 진단을 위해 가까운 병원을 방문하시기 바랍니다.
 
 *이것은 테스트 응답입니다. 실제 서비스를 위해서는 OpenAI API 키가 필요합니다.*`,
+        sources: [
+          {
+            title: "국가건강정보포털",
+            url: "https://health.kdca.go.kr/healthinfo/",
+          },
+          {
+            title: "서울대학교병원 의학정보",
+            url: "https://www.snuh.org/m/health/nMedInfo/nList.do",
+          },
+        ],
         timestamp: new Date().toISOString(),
         isTestResponse: true,
       });
