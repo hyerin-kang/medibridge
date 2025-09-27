@@ -8,7 +8,7 @@ const AnalysisPage = () => {
   const [readyToDownload, setReadyToDownload] = useState(false);
 
   const handleAnalyze = () => {
-    if (!address.trim()) return alert("주소를 입력해주세요!");
+    if (!address.trim()) return alert("병원명을 입력해주세요!");
     setLoading(true);
   };
 
