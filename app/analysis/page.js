@@ -15,13 +15,13 @@ const AnalysisPage = () => {
   return (
     <main className="p-6 max-w-2xl mx-auto font-sans h-[calc(100vh-170px)]">
       <h2 className="text-2xl font-bold mb-6 text-gray-600">
-        📍 입지 분석을 하고 싶은 주소를 입력해 주세요
+        📍 월간 분석 레포트를 확인할 병원명을 입력하세요
       </h2>
 
       <input
         value={address}
         onChange={(e) => setAddress(e.target.value)}
-        placeholder="예: 부산시 사하구 ..."
+        placeholder="예: 아늑한의원"
         className="w-full p-4 border-2 border-gray-200 rounded-xl mb-6 focus:outline-none focus:border-blue-500"
       />
 
