@@ -17,8 +17,10 @@ export default function Home() {
           transition={{ duration: 0.8 }}
           className="text-4xl sm:text-5xl font-extrabold text-gray-800 text-center"
         >
-          개원 입지 분석 및 <span className="text-blue-500">ALL-IN-ONE</span>{" "}
-          병원 마케팅
+          한국거주 외국인들을 위한{" "}
+          <span className="text-blue-500">AI 병원 연결 플랫폼</span>
+          {/* 개원 입지 분석 및ALL-IN-ONE</span>{" "}
+          병원 마케팅 */}
         </motion.h1>
 
         {/* 설명 텍스트 */}
@@ -43,7 +45,7 @@ export default function Home() {
             href="/analysis"
             className="px-8 py-4 bg-blue-500 hover:bg-blue-600 text-white rounded-xl text-lg font-semibold transition"
           >
-            입지 분석하기
+            월간 병원 레포트 확인하기
           </Link>
           <Link
             href="/chat"
