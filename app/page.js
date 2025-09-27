@@ -45,7 +45,7 @@ export default function Home() {
             href="/analysis"
             className="px-8 py-4 bg-blue-500 hover:bg-blue-600 text-white rounded-xl text-lg font-semibold transition"
           >
-            입지 분석하기
+            월간 병원 레포트 확인하기
           </Link>
           <Link
             href="/chat"
